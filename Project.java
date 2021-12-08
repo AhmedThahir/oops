@@ -17,7 +17,7 @@ interface Interface
 class Container
 {
   ArrayList<Stat> stats = new ArrayList<Stat>();
-  static boolean game = false;
+  static boolean gameStatus = false;
 
   class Stat implements Interface
   {
@@ -31,22 +31,24 @@ class Container
     JButton incBtn, decBtn;
 
     Stat()
-    {
-      count = 00;
-      
+    {      
       lb = new JLabel();
 
       tf = new JTextField();
-      tf.setBounds(50, 150, 1500, 1000); //x, y, width, height
       tf.setEditable(false);
 
       panel = new JPanel();
-      panel.setBounds(40, 80, 200, 200); // x, y, width, height
       panel.setBackground(Color.gray);
 
       incBtn = new JButton("+1");
       decBtn = new JButton("-1");
 
+      reset();
+    }
+
+    public void reset()
+    {
+      count = 00;
       update();
     }
 
@@ -62,7 +64,7 @@ class Container
 
     public void inc()
     {
-      if(game == true)
+      if(gameStatus == true)
       {
         count++;
         update();
@@ -71,7 +73,7 @@ class Container
 
     public void dec()
     {
-      if(game == true)
+      if(gameStatus == true)
       {
         if(count>0)
           count--;
@@ -109,14 +111,14 @@ class Container
     @Override
     public void inc()
     {
-      if(game == true)
+      if(gameStatus == true)
       {
         if(count < 5)
           count++;
           update();
+
         if(count == 5)
         {
-          game = false;
           new msgBox();
           throw new FouledOutException();
         }
@@ -138,9 +140,6 @@ class Container
     {
       setLayout( new FlowLayout() );
       setTitle("Thahir OOPS"); 
-
-      countDownPanel.setBounds(40, 80, 200, 200); // x, y, width, height
-      // countDownPanel.setBackground(Color.gray);
 
       startBtn = new JButton("Start Game");
       startBtn.addActionListener(this);
@@ -174,10 +173,10 @@ class Container
 
     public void countDown()
     {
-      game = true;
+      gameStatus = true;
       
       Timer timer = new Timer();
-      timer.scheduleAtFixedRate(new TimerTask() 
+      timer.scheduleAtFixedRate(new TimerTask() // anyonymous class
       {
         int m = 00, s = 10;
         String text;
@@ -209,7 +208,7 @@ class Container
           }
           if (m < 0) {
               timer.cancel();
-              game = false;
+              gameStatus = false;
               new msgBox();
           }
         }
@@ -222,10 +221,14 @@ class Container
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-      
+    public void actionPerformed(ActionEvent e) 
+    {
       if(e.getSource() == startBtn)
+      {  
+        for(int i = 0; i < stats.size(); i++)
+          stats.get(i).reset();
         countDown();
+      }
       if(e.getSource() == p.incBtn)
         p.inc();
       if(e.getSource() == p.decBtn)
@@ -253,17 +256,21 @@ class Container
   {
     msgBox()
     {
-      String text = "Player Summary\n";
-
-      for(int i = 0; i < stats.size(); i++)
-      {
-        text += stats.get(i).statName;
-        text += ": ";
-        text += stats.get(i).countText;      
-        text += "\n";
-      }
-
-      JOptionPane.showMessageDialog(this, text);
+        if(gameStatus == true)
+        {
+          gameStatus = false;
+          String text = "Player Summary\n";
+    
+          for(int i = 0; i < stats.size(); i++)
+          {
+            text += stats.get(i).statName;
+            text += ": ";
+            text += stats.get(i).countText;      
+            text += "\n";
+          }
+    
+          JOptionPane.showMessageDialog(this, text);
+        }
     }
   }
 }
