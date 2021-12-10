@@ -2,5 +2,5 @@
 
 This is my Java Project for Year 2 Sem 1 Object-Oriented Programming course
 
-- [Report](./OOPS/Report%for%‘Object%Oriented%Programming%Project’.md)
+- [Report](./OOPS/oops%20project.md)
 - [Code](./OOPS/Program.java)
