@@ -183,7 +183,9 @@ public void rating() {
 
 ### `Stat`
 
-Each 
+This class acts as the abstract class for all the 3 kinds of stats. They will be explained further.
+
+`count` keeps track of numerical value of the stat, `countText` is used for displaying the value in the GUI, and `statName` is used for the label in the GUI.
 
 ```java
 abstract class Stat implements Interface {
